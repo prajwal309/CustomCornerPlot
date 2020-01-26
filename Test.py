@@ -1,23 +1,29 @@
 import numpy as np
-from scipy.stats import gaussian_kde
-from matplotlib.colors import LogNorm, SymLogNorm, PowerNorm
 import matplotlib.pyplot as plt
+from CornerPlot import CustomCornerPlot, DoubleCustomCornerPlot
 
-Num = 1e5
-x1 = np.concatenate((np.random.normal(-5,1,int(Num//2)), np.random.normal(5,1,int(Num/2))))
-x2 = np.random.normal(0,2,int(Num))
+Parameters = ["T0", "Tinf", "Gam", "P0", "MR1", "MR2", "MR3", "MR4", "MR5"]
 
-DataSlice = [x1, x2]
+Mean1 = [300, 100, 5.0, 1.0, 0.1, 0.1, 0.05, 0.05, 0.1]
+Sigma1 = [10, 5, 0.25, 0.05, 0.01, 0.01, 0.01, 0.01, 0.01]
 
-NBins = 30
-counts,xbins,ybins=np.histogram2d(x1,x2,bins=NBins)
-Levels = np.percentile(counts,[68,96,99])
-print(Levels)
+Mean2 = [315, 105, 5,0, 1.0, 0.09, 0.09, 0.06, 0.06, 0.15]
+Sigma2 = [12, 6, 0.25, 0.05, 0.02, 0.02, 0.02, 0.02, 0.02]
 
-plt.figure()
-plt.hist2d(x1,x2, cmap='gist_earth_r', bins = NBins, norm=PowerNorm(gamma=0.5))
-plt.contour(counts.transpose(),Levels,extent=[xbins.min(),xbins.max(),
-    ybins.min(),ybins.max()],linewidths=2,cmap="gray",
-    linestyles='-')
-plt.axis("equal")
-plt.show()
+DataPoints = 1000
+
+np.random.seed(42)
+Data1 = np.zeros((len(Parameters), DataPoints))
+Data2 = np.zeros((len(Parameters), DataPoints))
+
+for count, Param in enumerate(Parameters):
+    Data1[count, :] = np.random.normal(Mean1[count], Sigma1[count], DataPoints) 
+    Data2[count, :] = np.random.normal(Mean2[count], Sigma2[count], DataPoints) 	
+print("The shape of the data is given by:", np.shape(Data1))
+
+CustomCornerPlot(Data1, Parameters)
+DoubleCustomCornerPlot(Data1, Data2, Parameters)
+
+
+
+

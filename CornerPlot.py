@@ -83,7 +83,11 @@ def CustomCornerPlot(Data, Parameters):
 
 
             elif i==j:
-                ax[i,j].hist(Data[i,:], fill=False, histtype='step', linewidth=2, color="navy", normed=True)
+		print("The value of i is::", i)
+		print("The value of j is::", j)	
+                print("The shape of data is given by::", np.shape(Data))
+		print("The length of the data is given by::", len(Data[i, :]))	
+		ax[i,j].hist(Data[i,:], fill=False, histtype='step', linewidth=2, color="navy", normed=True)
                 PercentileValues = np.percentile(Data[i,:],[15.8, 50.0, 84.2])
                 for counter_pc, Value in enumerate(PercentileValues):
                     if counter_pc == 1:
@@ -274,4 +278,4 @@ def DoubleCustomCornerPlot(Data1, Data2, Parameters):
     right = 0.95, bottom = 0.08, top = 0.92)
     plt.savefig("Trial.png")
     plt.savefig("Trial.pdf", format='pdf')
-    plt.show()
+    plt.close()
